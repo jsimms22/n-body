@@ -1,6 +1,9 @@
 #ifndef __CS267_COMMON_H__
 #define __CS267_COMMON_H__
 
+#include <vector>
+
+
 inline int min( int a, int b ) { return a < b ? a : b; }
 inline int max( int a, int b ) { return a > b ? a : b; }
 
@@ -22,6 +25,8 @@ typedef struct
   double ax;
   double ay;
 } particle_t;
+
+typedef std::vector<particle_t> bin_t;
 
 //
 //  timing routines
