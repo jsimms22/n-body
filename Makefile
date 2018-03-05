@@ -3,11 +3,25 @@
 #
 # Intel Compilers are loaded by default; for other compilers please check the module list
 #
-CC = icpc
-MPCC = mpicxx
-OPENMP = -qopenmp
-CFLAGS = -O3
+#CC = icpc
+#MPCC = mpicxx
+#OPENMP = -qopenmp
+#CFLAGS = -O3
+#LIBS =
+
+CC = CC
+MPCC = CC
+OPENMP = -fopenmp
+CFLAGS = -Ofast -std=c++11
 LIBS =
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Darwin)
+CC = g++-4.8
+MPCC = mpic++
+else
+CFLAGS += -march=opteron
+endif
 
 
 TARGETS = serial pthreads openmp mpi autograder
