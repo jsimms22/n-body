@@ -1,12 +1,11 @@
-rm: cannot remove ‘serial_sum.txt’: No such file or directory
-n = 500, simulation time = 0.784462 seconds
-n = 1000, simulation time = 2.88204 seconds
-n = 2000, simulation time = 11.8753 seconds
-n = 4000, simulation time = 47.5665 seconds
-n = 8000, simulation time = 202.544 seconds
+n = 500, simulation time = 0.159493 seconds
+n = 1000, simulation time = 0.208865 seconds
+n = 2000, simulation time = 0.383586 seconds
+n = 4000, simulation time = 0.855519 seconds
+n = 8000, simulation time = 1.7848 seconds
 
 Serial code is O(N^slope)
-Slope estimates are : 1.877315 2.042802 2.001982
-Slope estimate for line fit is: 1.980910
-Serial Grade =    2.86
+Slope estimates are : 0.389078 0.876979 1.157250 1.060891
+Slope estimate for line fit is: 0.900262
+Serial Grade =  100.00
 
