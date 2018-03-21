@@ -1,0 +1,2 @@
+*** Error in `./openmp': double free or corruption (fasttop): 0x00002aded8000950 ***
+/var/slurmd/job2619011/slurm_script: line 11: 21724 Segmentation fault      ./openmp -n 1000 -o openmp.txt
