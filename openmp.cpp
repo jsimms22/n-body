@@ -58,7 +58,7 @@ int main( int argc, char **argv )
     particle_t *particles = (particle_t*) malloc( n * sizeof(particle_t) );
     
     vector<bin_t> particle_bins;
-    bin_t temp; 
+    vector<bin_t> temp; 
     
     set_size( n );
     init_particles( n, particles );
@@ -69,88 +69,95 @@ int main( int argc, char **argv )
     //  simulate a number of time steps
     //
     double simulation_time = read_timer( );
-
     #pragma omp parallel private(dmin) 
     {
-//        #pragma omp master
-//        {
+        #pragma omp master
+        {
             numthreads = omp_get_num_threads();
-//        }
-
-    for (int step = 0; step < 1000; step++ )
-    {
-        navg = 0;
-        davg = 0.0;
-	dmin = 1.0;
+	    temp.resize(numthreads);
+        }
+        for (int step = 0; step < NSTEPS; step++ )
+        {
+            navg = 0;
+            davg = 0.0;
+	    dmin = 1.0;
         //
         //  compute all forces
         //
-        #pragma omp for reduction (+:navg) reduction(+:davg)
-        for (int i = 0; i < binNum; i++ )
-        {
-	    for (int j = 0; j < binNum; j++)
-	    {
-	        bin_t& vec = particle_bins[i*binNum+j];
-		for (int k = 0; k < vec.size(); k++)
-		{
-		    vec[k].ax = vec[k].ay = 0.0;
-		}
-		for (int dx = -1; dx <= 1; dx++)
-		{
-		    for (int dy = -1; dy <= 1; dy++)
+            #pragma omp for reduction (+:navg) reduction(+:davg)
+            for (int i = 0; i < binNum; i++ )
+            {
+	        for (int j = 0; j < binNum; j++)
+	        {
+	            bin_t& vec = particle_bins[i*binNum+j];
+		    for (int k = 0; k < vec.size(); k++)
 		    {
-			if (i + dx >= 0 && i + dx < binNum && j + dy >= 0 && j + dy < binNum )
-			{
-			    bin_t& vec2 = particle_bins[(i+dx) * binNum + j + dy];
-			    for (int k = 0; k < vec.size(); k++)
+		        vec[k].ax = vec[k].ay = 0.0;
+		    }   
+		    for (int dx = -1; dx <= 1; dx++)
+		    {
+		        for (int dy = -1; dy <= 1; dy++)
+		        {
+			    if (i + dx >= 0 && i + dx < binNum && j + dy >= 0 && j + dy < binNum )
 			    {
-				for (int l = 0; l < vec2.size(); l++)
-				{
-				    apply_force(vec[k],vec2[l],&dmin,&davg,&navg);
-				}
+			        bin_t& vec2 = particle_bins[(i+dx) * binNum + j + dy];
+			        for (int k = 0; k < vec.size(); k++)
+			        {
+	  		            for (int l = 0; l < vec2.size(); l++)
+			            {
+				        apply_force(vec[k],vec2[l],&dmin,&davg,&navg);
+		                    }
+			        }
 			    }
-			}
+		        }
 		    }
-		}
-	    } 
-       } 	
+	        } 
+            } 	
         //
         //  move particles
         //
-        #pragma omp for
-        for (int i = 0; i < binNum; i++ ) 
-        {
-	    for (int j = 0; j < binNum; j++)
-	    {
-		bin_t& vec = particle_bins[i*binNum+j];
-		int tail = vec.size(), k = 0;
-		for (;k < tail;)
-		{
-		    move(vec[k]);
-		    int x = int(vec[k].x / binSize);
-		    int y = int(vec[k].y / binSize);
-		    if (x == i && y == j)
+            int id = omp_get_thread_num();
+	    bin_t& tmp = temp[id];
+	    tmp.clear();	
+            #pragma omp for
+            for (int i = 0; i < binNum; i++ ) 
+            {
+	        for (int j = 0; j < binNum; j++)
+	        {
+		    bin_t& vec = particle_bins[i*binNum+j];
+		    int tail = vec.size(), k = 0;
+		    for (;k < tail;)
 		    {
-			k++;
-		    } else {
-			temp.push_back(vec[k]);
-			vec[k] = vec[--tail];
+		        move(vec[k]);
+		        int x = int(vec[k].x / binSize);
+		        int y = int(vec[k].y / binSize);
+		        if (x == i && y == j)
+		        {
+			    k++;
+		        } else {
+			    tmp.push_back(vec[k]);
+			    vec[k] = vec[--tail];
+		        }
 		    }
-		}
-	        vec.resize(k);
+	            vec.resize(k);
+	        }
 	    }
-	}
-
-	for (int i = 0; i < temp.size(); i++)
-	{
-	    int x = int(temp[i].x / binSize);
-	    int y = int(temp[i].y / binSize);
-	    particle_bins[x*binNum+y].push_back(temp[i]);
-	}
-	temp.clear();
-  
-        if (find_option( argc, argv, "-no" ) == -1 ) 
-        {
+	    #pragma omp master
+	    {
+	        for (int j = 0; j < numthreads; j++)
+	        {
+		    bin_t& tmp = temp[j];
+		    for (int i = 0; i < tmp.size(); i++)
+		    {	
+	    		int x = int(tmp[i].x / binSize);
+	    		int y = int(tmp[i].y / binSize);
+	    		particle_bins[x*binNum+y].push_back(tmp[i]);
+		    }
+	        }
+  	    }
+	
+    if (find_option( argc, argv, "-no" ) == -1 ) 
+    {
           //
           //  compute statistical data
           //
