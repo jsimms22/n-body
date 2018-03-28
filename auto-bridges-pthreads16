@@ -1,13 +1,13 @@
 #!/bin/bash
 #SBATCH -A cc3uv3p # 2017 XSEDE Applications of Parallel Computing Course Allocation
-#SBATCH -J auto-particle-pthreads16
-#SBATCH -o auto-particle-pthreads16.stdout
+#SBATCH -J auto-particle-openmp16
+#SBATCH -o auto-particle-openmp.stdout
 #SBATCH -n 16         
 #SBATCH -p RM
 #SBATCH -t 00:10:00
 #SBATCH -N 1         
      
-rm pthreads_sum.txt
+rm openmp_sum.txt
 ./serial -n 500 -no -s openmp_sum.txt
 ./openmp -p 1 -n 500 -no -s openmp_sum.txt
 ./openmp -p 2 -n 500 -no -s openmp_sum.txt
