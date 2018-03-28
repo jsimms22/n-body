@@ -9,13 +9,13 @@
 
 rm mpi_sum.txt
 ./serial -n 500 -no -s mpi_sum.txt
-./mpi -p 1 -n 500 -no -s mpi_sum.txt
-./mpi -p 2 -n 500 -no -s mpi_sum.txt
-./mpi -p 4 -n 500 -no -s mpi_sum.txt
-./mpi -p 8 -n 500 -no -s mpi_sum.txt
-./mpi -p 16 -n 500 -no -s mpi_sum.txt
-./mpi -p 2 -n 1000 -no -s mpi_sum.txt
-./mpi -p 4 -n 2000 -no -s mpi_sum.txt
-./mpi -p 8 -n 4000 -no -s mpi_sum.txt
-./mpi -p 16 -n 8000 -no -s mpi_sum.txt
+./mpi -n 500 -no -s mpi_sum.txt
+./mpi -n 500 -no -s mpi_sum.txt
+./mpi -n 500 -no -s mpi_sum.txt
+./mpi -n 500 -no -s mpi_sum.txt
+./mpi -n 500 -no -s mpi_sum.txt
+./mpi -n 1000 -no -s mpi_sum.txt
+./mpi -n 2000 -no -s mpi_sum.txt
+./mpi -n 4000 -no -s mpi_sum.txt
+./mpi -n 8000 -no -s mpi_sum.txt
 ./autograder -v mpi -s mpi_sum.txt

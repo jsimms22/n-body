@@ -6,7 +6,7 @@
 CC = icpc
 MPCC = mpicxx
 OPENMP = -qopenmp
-CFLAGS = -O3 -std=c++11
+CFLAGS = -Ofast -std=c++11
 LIBS =
 
 
