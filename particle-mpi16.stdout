@@ -34,30 +34,7 @@ MPID_Init(1832)...........: channel initialization failed
 MPIDI_CH3_Init(126).......: fail failed
 MPID_nem_init_ckpt(836)...: fail failed
 MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
-Fatal error in MPI_Init: Other MPI error, error stack:
-MPIR_Init_thread(805).....: fail failed
-MPID_Init(1832)...........: channel initialization failed
-MPIDI_CH3_Init(126).......: fail failed
-MPID_nem_init_ckpt(836)...: fail failed
-MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
-Fatal error in MPI_Init: Other MPI error, error stack:
-MPIR_Init_thread(805).....: fail failed
-MPID_Init(1832)...........: channel initialization failed
-MPIDI_CH3_Init(126).......: fail failed
-MPID_nem_init_ckpt(836)...: fail failed
-MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
-Fatal error in MPI_Init: Other MPI error, error stack:
-MPIR_Init_thread(805).....: fail failed
-MPID_Init(1832)...........: channel initialization failed
-MPIDI_CH3_Init(126).......: fail failed
-MPID_nem_init_ckpt(836)...: fail failed
-MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
-Fatal error in MPI_Init: Other MPI error, error stack:
-MPIR_Init_thread(805).....: fail failed
-MPID_Init(1832)...........: channel initialization failed
-MPIDI_CH3_Init(126).......: fail failed
-MPID_nem_init_ckpt(836)...: fail failed
-MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
+[unset]: readline failed
 Fatal error in MPI_Init: Other MPI error, error stack:
 MPIR_Init_thread(805).....: fail failed
 MPID_Init(1832)...........: channel initialization failed
@@ -77,9 +54,21 @@ MPID_Init(1832)...........: channel initialization failed
 MPIDI_CH3_Init(126).......: fail failed
 MPID_nem_init_ckpt(836)...: fail failed
 MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
+Fatal error in MPI_Init: Other MPI error, error stack:
+MPIR_Init_thread(805).....: fail failed
+MPID_Init(1832)...........: channel initialization failed
+MPIDI_CH3_Init(126).......: fail failed
+MPID_nem_init_ckpt(836)...: fail failed
+MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
 [unset]: readline failed
 [unset]: readline failed
 [unset]: readline failed
+Fatal error in MPI_Init: Other MPI error, error stack:
+MPIR_Init_thread(805).....: fail failed
+MPID_Init(1832)...........: channel initialization failed
+MPIDI_CH3_Init(126).......: fail failed
+MPID_nem_init_ckpt(836)...: fail failed
+MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
 [unset]: readline failed
 Fatal error in MPI_Init: Other MPI error, error stack:
 MPIR_Init_thread(805).....: fail failed
@@ -97,13 +86,24 @@ MPID_nem_init_ckpt(836)...: fail failed
 MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
 [unset]: readline failed
 [unset]: readline failed
+Fatal error in MPI_Init: Other MPI error, error stack:
+MPIR_Init_thread(805).....: fail failed
+MPID_Init(1832)...........: channel initialization failed
+MPIDI_CH3_Init(126).......: fail failed
+MPID_nem_init_ckpt(836)...: fail failed
+MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
 [unset]: readline failed
-[unset]: readline failed
+Fatal error in MPI_Init: Other MPI error, error stack:
+MPIR_Init_thread(805).....: fail failed
+MPID_Init(1832)...........: channel initialization failed
+MPIDI_CH3_Init(126).......: fail failed
+MPID_nem_init_ckpt(836)...: fail failed
+MPIDI_CH3I_Seg_commit(427): PMI_KVS_Get returned -1
 [unset]: readline failed
 [unset]: readline failed
 [unset]: readline failed
 [unset]: readline failed
 srun: error: r227: tasks 1-15: Exited with exit code 15
 srun: Job step aborted: Waiting up to 302 seconds for job step to finish.
-slurmstepd: error: *** JOB 2641402 ON r227 CANCELLED AT 2018-03-27T21:20:30 ***
-slurmstepd: error: *** STEP 2641402.0 ON r227 CANCELLED AT 2018-03-27T21:20:30 ***
+slurmstepd: error: *** STEP 2641452.0 ON r227 CANCELLED AT 2018-03-27T21:38:46 ***
+slurmstepd: error: *** JOB 2641452 ON r227 CANCELLED AT 2018-03-27T21:38:46 ***
