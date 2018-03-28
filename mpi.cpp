@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <cmath>
+#include <signal.h>
 #include <unistd.h>
 #include "common.h"
 
@@ -66,6 +67,9 @@ void bin_particle(particle_t& particle, vector<bin_t>& bins)
 {
     int x = particle.x / bin_size;
     int y = particle.y / bin_size;
+    //printf("bin %d. x %d. y %d", x*bin_count + y, x, y);
+    //fflush(stdout);
+    //printf(", size %ld.\n", bins[x*bin_count + y].size());
     bins[x*bin_count + y].push_back(particle);
 }
 
@@ -89,7 +93,9 @@ inline void get_neighbors(int i, int j, vector<int>& neighbors)
 //  benchmarking program
 //
 int main( int argc, char **argv )
-{   
+{    
+    //signal(SIGSEGV, sigsegv);
+
     int navg, nabsavg=0;
     double dmin, absmin=1.0,davg,absavg=0.0;
     double rdavg,rdmin;
@@ -161,12 +167,19 @@ int main( int argc, char **argv )
         my_bins_end = bin_count;
     
     // printf("worker %d: from %d to %d.\n", rank, my_bins_start, my_bins_end);
+    //
+    //  simulate a number of time steps
+    //
     double simulation_time = read_timer( );
     for( int step = 0; step < NSTEPS; step++ )
     {
         navg = 0;
         dmin = 1.0;
         davg = 0.0;
+
+        // if( find_option(argc, argv, "-no" ) == -1 )
+        //     if( fsave && (step%SAVEFREQ) == 0 )
+        //         save( fsave, n, particles );
 
         // compute local forces
         for (int i = my_bins_start; i < my_bins_end; ++i) {
@@ -269,6 +282,7 @@ int main( int argc, char **argv )
             }
             total_num = recv_counts[n_proc-1] + displs[n_proc-1];
             // printf("worker: %d, 1. %d / %d.\n", rank, total_, total_num);
+            // assert(total_ == total_num);
             incoming_move.resize(total_num);
         }
 
@@ -309,6 +323,7 @@ int main( int argc, char **argv )
                 displs[i] = displs[i-1] + recv_counts[i-1];
             }
             // printf("worker: %d, 2. %d / %d.\n", rank, total_, displs[n_proc-1] + recv_counts[n_proc-1]);
+            // assert(total_ == displs[n_proc-1] + recv_counts[n_proc-1]);
         }
 
         // printf("worker: %d. MPI_Scatter.\n", rank);
@@ -326,12 +341,90 @@ int main( int argc, char **argv )
 
         // printf("worker: %d. MPI_Scatterv.\n", rank);
         MPI_Scatterv(scatter_particles_flatten.data(), recv_counts, displs, PARTICLE, 
+            outgoing_move.data(), send_count, PARTICLE, 0, MPI_COMM_WORLD);
 
+        // int total__ = 0;
+        // MPI_Reduce(&send_count, &total__, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+        // if (rank == 0) {
+        //     assert(total_ == total__);
+        // }
+
+        // printf("worker: %d. Bin.\n", rank);
         for (int i = 0; i < send_count; ++i) {
             particle_t &p = outgoing_move[i];
             assert(p.x >= 0 && p.y >= 0 && p.x <= grid_size && p.y <= grid_size);
             bin_particle(p, bins);
         }
+
+        // bin_t for_up, for_down;
+        // MPI_Request req_up, req_down;
+
+        // if (rank != 0) {
+        //     for (int i = my_bins_start, j = 0; j < bin_count; ++j) {
+        //         bin_t& bin = bins[i * bin_count + j];
+        //         for_up.insert(for_up.end(), bin.begin(), bin.end());
+        //     }
+        //     // for (int i = 0; i < for_up.size(); ++i) {
+        //     //     assert(for_up[i].x >= 0 && for_up[i].y >= 0 &&
+        //     //         for_up[i].x <= grid_size && for_up[i].y <= grid_size);
+        //     // }
+        //     MPI_Isend(for_up.data(), for_up.size(), PARTICLE, rank - 1, 0, MPI_COMM_WORLD, &req_up);
+        // }
+
+        // if (rank != n_proc - 1) {
+        //     bin_t recv_tmp;
+        //     MPI_Status status;
+        //     MPI_Probe(rank + 1, 0, MPI_COMM_WORLD, &status);
+        //     int count;
+        //     MPI_Get_count(&status, PARTICLE, &count);
+        //     recv_tmp.resize(count);
+
+        //     MPI_Recv(recv_tmp.data(), count, PARTICLE, rank + 1, 0, MPI_COMM_WORLD, &status);
+
+        //     for (int i = my_bins_end, j = 0; j < bin_count; ++j) {
+        //         bin_t& bin = bins[i * bin_count + j];
+        //         bin.clear();
+        //     }
+
+        //     for (int i = 0; i < recv_tmp.size(); ++i) {
+        //         bin_particle(recv_tmp[i], bins);
+        //     }
+
+        //     for (int i = my_bins_end-1, j = 0; j < bin_count; ++j) {
+        //         bin_t& bin = bins[i * bin_count + j];
+        //         for_down.insert(for_down.end(), bin.begin(), bin.end());
+        //     }
+        //     // for (int i = 0; i < for_down.size(); ++i) {
+        //     //     assert(for_down[i].x >= 0 && for_down[i].y >= 0 &&
+        //     //     for_down[i].x <= grid_size && for_down[i].y <= grid_size);
+        //     // }
+        //     MPI_Isend(for_down.data(), for_down.size(), PARTICLE, rank + 1, 0, MPI_COMM_WORLD, &req_down);
+        // }
+
+        // if (rank != 0) {
+        //     bin_t recv_tmp;
+        //     MPI_Status status;
+        //     MPI_Probe(rank - 1, 0, MPI_COMM_WORLD, &status);
+        //     int count;
+        //     MPI_Get_count(&status, PARTICLE, &count);
+        //     recv_tmp.resize(count);
+
+        //     MPI_Recv(recv_tmp.data(), count, PARTICLE, rank - 1, 0, MPI_COMM_WORLD, &status);
+
+        //     for (int i = 0; i < recv_tmp.size(); ++i) {
+        //         assert(recv_tmp[i].x >= 0 && recv_tmp[i].y >= 0 &&
+        //         recv_tmp[i].x <= grid_size && recv_tmp[i].y <= grid_size);
+        //     }
+
+        //     for (int i = my_bins_start-1, j = 0; j < bin_count; ++j) {
+        //         bin_t& bin = bins[i * bin_count + j];
+        //         bin.clear();
+        //     }
+
+        //     for (int i = 0; i < recv_tmp.size(); ++i) {
+        //         bin_particle(recv_tmp[i], bins);
+        //     }
+        // }
     }
     simulation_time = read_timer( ) - simulation_time;
   
