@@ -1,0 +1,27 @@
+n = 500, simulation time = 0.09506 seconds
+n = 500,threads = 28, simulation time = 0.056215 seconds
+n = 500,threads = 28, simulation time = 0.058144 seconds
+n = 500,threads = 28, simulation time = 0.081486 seconds
+n = 500,threads = 28, simulation time = 0.081017 seconds
+n = 500,threads = 28, simulation time = 0.083247 seconds
+n = 1000,threads = 28, simulation time = 0.109026 seconds
+n = 2000,threads = 28, simulation time = 0.093812 seconds
+n = 4000,threads = 28, simulation time = 0.161483 seconds
+/var/slurmd/job2641267/slurm_script: line 20: ./openmo: No such file or directory
+
+Strong scaling estimates are :
+    1.69    1.63    1.17    1.17 (speedup)
+    1.69    0.06    0.04    0.04 (efficiency)    for
+      28      28      28      28 threads/processors
+
+Average strong scaling efficiency:    0.46 
+
+Weak scaling estimates are :
+    1.69    1.14    0.87    1.01 (efficiency)    for
+      28      28      28      28 threads/processors
+
+Average weak scaling efficiency:    1.18 
+
+
+openmp Grade =   84.37
+
