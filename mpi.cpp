@@ -3,16 +3,16 @@
 #include <stdio.h>
 #include <assert.h>
 #include <vector>
-//#include <map>
-//#include <set>
+#include <map>
+#include <set>
 #include <cmath>
 #include <signal.h>
 #include <unistd.h>
 #include "common.h"
 
 using std::vector;
-//using std::map;
-//using std::set;
+using std::map;
+using std::set;
 
 #define _cutoff 0.01    //Value copied from common.cpp
 #define _density 0.0005
