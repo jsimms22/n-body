@@ -331,7 +331,7 @@ int main( int argc, char **argv )
           //  -The minimum distance absmin between 2 particles during the run of the simulation
           //  -A Correct simulation will have particles stay at greater than 0.4 (of cutoff) with typical values between .7-.8
           //  -A simulation where particles don't interact correctly will be less than 0.4 (of cutoff) with typical values between .01-.05
-          //
+          //  -The average distance absavg is ~.95 when most particles are interacting correctly and ~.66 when no particles are interacting
           //  -The average distance absavg is ~.95 when most particles are interacting correctly and ~.66 when no particles are interacting
           //
           printf( ", absmin = %lf, absavg = %lf", absmin, absavg);
@@ -355,7 +355,7 @@ int main( int argc, char **argv )
     if( fsave )
         fclose( fsave );
     
-    MPI_Finalize( );
+    MPI_Finalize();
     
     return 0;
 }
