@@ -1,0 +1,12 @@
+
+mpi:21554 terminated with signal 6 at PC=2b11ab45c1d7 SP=7ffec4d77f68.  Backtrace:
+/lib64/libc.so.6(gsignal+0x37)[0x2b11ab45c1d7]
+/lib64/libc.so.6(abort+0x148)[0x2b11ab45d8c8]
+/lib64/libstdc++.so.6(_ZN9__gnu_cxx27__verbose_terminate_handlerEv+0x165)[0x2b11aac669d5]
+/lib64/libstdc++.so.6(+0x5e946)[0x2b11aac64946]
+/lib64/libstdc++.so.6(+0x5e973)[0x2b11aac64973]
+/lib64/libstdc++.so.6(+0x5eb93)[0x2b11aac64b93]
+/lib64/libstdc++.so.6(_Znwm+0x7d)[0x2b11aac6512d]
+./mpi[0x40201c]
+/lib64/libc.so.6(__libc_start_main+0xf5)[0x2b11ab448b35]
+./mpi[0x40303a]

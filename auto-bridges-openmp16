@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH -A cc3uv3p # 2017 XSEDE Applications of Parallel Computing Course Allocation
 #SBATCH -J auto-particle-openmp16
-#SBATCH -o auto-particle-openmp16.stdout
-#SBATCH -n 16         
+#SBATCH -o auto-particle-openmp16.stdout         
 #SBATCH -p RM
+#SBATCH --ntasks-per-node 28
 #SBATCH -t 00:10:00     
 #SBATCH -N 1        
 
@@ -17,14 +17,18 @@ export OMP_NUM_THREADS=4
 ./openmp -n 500 -no -s openmp_sum.txt
 export OMP_NUM_THREADS=8
 ./openmp -n 500 -no -s openmp_sum.txt
-export OMP_NUM_THREADS=16
+export OMP_NUM_THREADS=14
+./openmp -n 500 -no -s openmp_sum.txt
+export OMP_NUM_THREADS=28
 ./openmp -n 500 -no -s openmp_sum.txt
 export OMP_NUM_THREADS=2
 ./openmp -n 1000 -no -s openmp_sum.txt
 export OMP_NUM_THREADS=4
 ./openmp -n 2000 -no -s openmp_sum.txt
 export OMP_NUM_THREADS=8
+./openmp -n 2000 -no -s openmp_sum.txt
+export OMP_NUM_THREADS=14
 ./openmp -n 4000 -no -s openmp_sum.txt
-export OMP_NUM_THREADS=16
+export OMP_NUM_THREADS=28
 ./openmp -n 8000 -no -s openmp_sum.txt
 ./autograder -v openmp -s openmp_sum.txt

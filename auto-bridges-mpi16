@@ -2,20 +2,23 @@
 #SBATCH -A cc3uv3p # 2017 XSEDE Applications of Parallel Computing Course Allocation
 #SBATCH -J auto-particle-mpi16
 #SBATCH -o auto-particle-mpi16.stdout
-#SBATCH -n 16         
 #SBATCH -p RM
-#SBATCH -t 00:10:00     
-#SBATCH -N 1      
+#SBATCH -t 08:00:00          
+#SBATCH --ntasks-per-node 28
 
 rm mpi_sum.txt
 ./serial -n 500 -no -s mpi_sum.txt
-./mpi -n 500 -no -s mpi_sum.txt
-./mpi -n 500 -no -s mpi_sum.txt
-./mpi -n 500 -no -s mpi_sum.txt
-./mpi -n 500 -no -s mpi_sum.txt
-./mpi -n 500 -no -s mpi_sum.txt
-./mpi -n 1000 -no -s mpi_sum.txt
-./mpi -n 2000 -no -s mpi_sum.txt
-./mpi -n 4000 -no -s mpi_sum.txt
-./mpi -n 8000 -no -s mpi_sum.txt
+salloc -N 1 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 2 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 4 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 6 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 8 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 10 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 12 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 14 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 16 mpirun -np $SLURM_NTASKS ./mpi -n 500 -no -s mpi_sum.txt
+salloc -N 2 mpirun -np $SLURM_NTASKS ./mpi -n 1000 -no -s mpi_sum.txt
+salloc -N 4 mpirun -np $SLURM_NTASKS ./mpi -n 2000 -no -s mpi_sum.txt
+salloc -N 8 mpirun -np $SLURM_NTASKS ./mpi -n 4000 -no -s mpi_sum.txt
+salloc -N 16 mpirun -np $SLURM_NTASKS ./mpi -n 8000 -no -s mpi_sum.txt
 ./autograder -v mpi -s mpi_sum.txt
